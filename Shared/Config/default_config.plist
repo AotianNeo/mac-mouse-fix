@@ -19,10 +19,12 @@
 		<true/>
 		<key>trackpadSimulation</key>
 		<true/>
-		<key>precise</key>
-		<false/>
+		<key>windowsMode</key>
+		<true/>
+		<key>linearStepSize</key>
+		<integer>30</integer>
 		<key>smooth</key>
-		<string>high</string>
+		<string>off</string>
 		<key>speed</key>
 		<string>medium</string>
 	</dict>

@@ -425,7 +425,14 @@ static void heavyProcessing(CGEventRef event, int64_t scrollDeltaAxis1, int64_t 
     
     int64_t pxToScrollForThisTick;
     
-    if (_scrollConfig.useAppleAcceleration) {
+    if (_scrollConfig.isWindowsMode) {
+        
+        /// Windows Linear Mode:
+        /// Completely bypass non-linear acceleration curves and timeBetweenTicks sampling.
+        /// Every wheel notch scrolls a fixed, constant distance (default 3 lines = 30px).
+        pxToScrollForThisTick = _scrollConfig.linearStepSize;
+        
+    } else if (_scrollConfig.useAppleAcceleration) {
         
         pxToScrollForThisTick = scrollDelta;
         
