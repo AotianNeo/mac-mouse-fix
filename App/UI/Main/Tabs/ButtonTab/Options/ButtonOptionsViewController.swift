@@ -38,7 +38,7 @@ class ButtonOptionsViewController: NSViewController {
         
         /// Adjust views for Tahoe
         if #available(macOS 26.0, *) {
-            self.view.prefersCompactControlSizeMetrics = true;
+            self.view.setValue(true, forKey: "prefersCompactControlSizeMetrics")
         }
     }
     

@@ -78,7 +78,7 @@ class TrialNotificationController: NSWindowController {
         
         /// Make views compact on Tahoe
         if #available(macOS 26.0, *) {
-            self.window?.contentView?.prefersCompactControlSizeMetrics = true;
+            self.window?.contentView?.setValue(true, forKey: "prefersCompactControlSizeMetrics")
         }
     }
     
