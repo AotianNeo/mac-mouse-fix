@@ -77,7 +77,7 @@ static NSTimer *_showDurationTimer = nil;
     
     /// Make views compact on Tahoe (Does this even make any difference on Toasts?) [Jul 9 2025]
     if (@available(macOS 26.0, *)) {
-        self.window.contentView.prefersCompactControlSizeMetrics = YES;
+        [self.window.contentView setValue:@YES forKey:@"prefersCompactControlSizeMetrics"];
     }
 }
 

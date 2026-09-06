@@ -189,7 +189,8 @@ static NSDictionary *sideButtonActions;
                 [NSNotificationCenter.defaultCenter addObserverForName: /*@"_NSWindowDidBecomeVisible"*/ @"_NSWindowDidBecomeVisible" object: nil queue: nil usingBlock: ^void (NSNotification * _Nonnull notification) {
                     if (@available(macOS 26.0, *)) {
                         NSWindow *win = (NSWindow *)notification.object;
-                        assert(win.contentView.prefersCompactControlSizeMetrics == YES
+                        BOOL prefersCompact = [[win.contentView valueForKey:@"prefersCompactControlSizeMetrics"] boolValue];
+                        assert(prefersCompact == YES
                             || isclassd(win, _NSAlertPanel)                         /// NSAlert windows
                             || isclassd(win, NSPopupMenuWindow)                     /// NSMenu windows
                             || [win.frameAutosaveName isEqual: @"SUStatusFrame"]    /// Sparkle window
