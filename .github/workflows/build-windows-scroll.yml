@@ -1,0 +1,61 @@
+name: Build Windows-Style Linear Scroll Mac Mouse Fix
+
+on:
+  push:
+    branches:
+      - feat/windows-linear-scroll
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Select Xcode
+        run: |
+          echo "Available Xcode installations:"
+          ls -d /Applications/Xcode*.app || true
+          if [ -d "/Applications/Xcode_15.4.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_15.4.app
+          elif [ -d "/Applications/Xcode_15.2.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_15.2.app
+          elif [ -d "/Applications/Xcode_16.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_16.app
+          fi
+          xcodebuild -version
+
+      - name: Build Mac Mouse Fix (Release)
+        run: |
+          xcodebuild build \
+            -project "Mouse Fix.xcodeproj" \
+            -scheme "App - Release" \
+            -configuration Release \
+            -derivedDataPath ./build \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=YES
+
+      - name: Package App Bundle
+        run: |
+          cd ./build/Build/Products/Release
+          echo "Products directory contents:"
+          ls -la
+          # Deep re-sign all bundles with ad-hoc signature so Helper and Main App share exact same signing identity
+          codesign --force --deep --sign - "Mac Mouse Fix.app/Contents/Library/LoginItems/Mac Mouse Fix Helper.app"
+          codesign --force --deep --sign - "Mac Mouse Fix.app"
+          codesign --verify --deep "Mac Mouse Fix.app"
+          zip -ry "Mac-Mouse-Fix-Windows-Linear-Scroll.zip" "Mac Mouse Fix.app"
+          mkdir -p "$GITHUB_WORKSPACE/dist"
+          mv "Mac-Mouse-Fix-Windows-Linear-Scroll.zip" "$GITHUB_WORKSPACE/dist/"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mac-Mouse-Fix-Windows-Linear-Scroll
+          path: dist/Mac-Mouse-Fix-Windows-Linear-Scroll.zip
+          retention-days: 14
