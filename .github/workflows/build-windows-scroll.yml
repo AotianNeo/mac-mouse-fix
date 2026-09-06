@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
@@ -20,13 +20,7 @@ jobs:
         run: |
           echo "Available Xcode installations:"
           ls -d /Applications/Xcode*.app || true
-          if [ -d "/Applications/Xcode_15.4.app" ]; then
-            sudo xcode-select -s /Applications/Xcode_15.4.app
-          elif [ -d "/Applications/Xcode_15.2.app" ]; then
-            sudo xcode-select -s /Applications/Xcode_15.2.app
-          elif [ -d "/Applications/Xcode_16.app" ]; then
-            sudo xcode-select -s /Applications/Xcode_16.app
-          fi
+          sudo xcode-select -s /Applications/Xcode.app
           xcodebuild -version
 
       - name: Build Mac Mouse Fix (Release)
