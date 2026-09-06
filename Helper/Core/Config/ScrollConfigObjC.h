@@ -66,6 +66,7 @@ typedef enum  {
     kMFScrollSpeedLow,
     kMFScrollSpeedMedium,
     kMFScrollSpeedHigh,
+    kMFScrollSpeedWindows,
 } MFScrollSpeed;
 
 typedef enum {

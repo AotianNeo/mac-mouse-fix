@@ -19,6 +19,7 @@ class ScrollTabController: NSViewController {
     var trackpad = ConfigValue<Bool>(configPath: "Scroll.trackpadSimulation")
     var reverseDirection = ConfigValue<Bool>(configPath: "Scroll.reverseDirection")
     var scrollSpeed = ConfigValue<String>(configPath: "Scroll.speed")
+    var windowsMode = ConfigValue<Bool>(configPath: "Scroll.windowsMode")
     var precise = ConfigValue<Bool>(configPath: "Scroll.precise")
     var horizontalMod = ConfigValue<UInt>(configPath: "Scroll.modifiers.horizontal")
     var zoomMod = ConfigValue<UInt>(configPath: "Scroll.modifiers.zoom")

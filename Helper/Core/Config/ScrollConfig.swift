@@ -258,6 +258,38 @@ import Cocoa
         return accelerationCurve == nil
     }
     
+    // MARK: Windows Linear Mode (No Acceleration)
+    
+    @objc lazy var isWindowsMode: Bool = {
+        if let win = c("windowsMode") as? Bool, win {
+            return true
+        }
+        if let sp = c("speed") as? String, sp == "windows" || sp == "linear" {
+            return true
+        }
+        return false
+    }()
+    
+    @objc lazy var linearStepSize: Int64 = {
+        if let custom = c("linearStepSize") as? Int, custom > 0 {
+            return Int64(custom)
+        }
+        // Windows default: 3 lines per notch. In line-scroll, 1 line = 10px.
+        // Low: 2 lines (20px), Medium/Windows: 3 lines (30px), High: 5 lines (50px).
+        switch u_speed {
+        case kMFScrollSpeedLow:
+            return 20
+        case kMFScrollSpeedMedium, kMFScrollSpeedWindows:
+            return 30
+        case kMFScrollSpeedHigh:
+            return 50
+        case kMFScrollSpeedSystem:
+            return 30
+        default:
+            return 30
+        }
+    }()
+    
     // MARK: Invert Direction
     
     @objc lazy var u_invertDirection: MFScrollInversion = {
@@ -393,6 +425,10 @@ import Cocoa
     
     @objc lazy var fastScrollCurve: ScrollSpeedupCurve? = {
         
+        if isWindowsMode {
+            return nil
+        }
+        
         /// NOTES:
         /// - We're using swipeThreshold to configure how far the user must've scrolled before fastScroll starts kicking in.
         /// - It would probably be better to have an explicit mechanism that counts how many pixels the user has scrolled already and then lets fastScroll kick in after a threshold is reached. That would also scale with the scrollSpeed setting. These current `fastScrollSpeedup` values are chosen so you don't accidentally trigger it at the lowest scrollSpeed, but they could be higher at higher scrollspeeds.
@@ -472,6 +508,7 @@ import Cocoa
         case "low":     return kMFScrollSpeedLow
         case "medium":  return kMFScrollSpeedMedium
         case "high":    return kMFScrollSpeedHigh
+        case "windows", "linear": return kMFScrollSpeedWindows
         default: fatalError()
         }
     }()
