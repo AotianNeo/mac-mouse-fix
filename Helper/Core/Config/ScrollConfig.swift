@@ -512,7 +512,7 @@ import Cocoa
         default: fatalError()
         }
     }()
-    @objc lazy var u_precise: Bool = { c("precise") as! Bool }()
+    @objc lazy var u_precise: Bool = { (c("precise") as? Bool) ?? false }()
     
     /// Stored property
     ///     This is used by Scroll.m to determine how to accelerate

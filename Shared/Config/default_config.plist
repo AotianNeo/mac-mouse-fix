@@ -19,6 +19,8 @@
 		<true/>
 		<key>trackpadSimulation</key>
 		<true/>
+		<key>precise</key>
+		<false/>
 		<key>windowsMode</key>
 		<true/>
 		<key>linearStepSize</key>
