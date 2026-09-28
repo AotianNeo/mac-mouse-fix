@@ -22,6 +22,7 @@ final class AutoScrollIndicatorWindowController {
         panel.level = .statusBar
         panel.ignoresMouseEvents = true
         panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .stationary]
+        panel.animationBehavior = .none /// [MMF] The default fades out for ~265 ms after Auto Scroll has already stopped. Showing is instant, so hiding should be too.
         panel.contentView = AutoScrollIndicatorView(frame: CGRect(origin: .zero, size: autoScrollIndicatorSize))
         return panel
     }()
