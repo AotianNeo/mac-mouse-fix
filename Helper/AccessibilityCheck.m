@@ -200,7 +200,6 @@
         [Config load_Manual];
         
         [SwitchMaster.shared load_Manual];
-        [AutoScroll.shared load_Manual]; /// Needs to come after `[ButtonInputReceiver load_Manual]`, so its taps are inserted in front of the ButtonInputReceiver tap.
         
         [ScreenDrawer.shared load_Manual];
         [PointerFreeze load_Manual];

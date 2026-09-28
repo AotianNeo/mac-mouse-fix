@@ -4907,25 +4907,25 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Scroll by moving your mouse away from where you pressed the button. The farther you move it, the faster it scrolls\n \nClick instead to keep scrolling without holding the button, and click again to stop\n \nWorks like middle-click Auto Scroll on Windows"
+            "value" : "Scroll by moving your mouse while holding the button. The farther you move it from where you pressed the button, the faster it scrolls\n \nWorks like middle-click Auto Scroll on Windows"
           }
         },
         "zh-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "按住按鍵後向任意方向移動滑鼠來捲動。離按下的位置越遠，捲動越快\n \n也可以按一下後放開按鍵持續捲動，再按一下停止\n \n作用相當於 Windows 上的中鍵自動捲動"
+            "value" : "按住按鍵並移動滑鼠來捲動。離按下的位置越遠，捲動越快\n \n作用相當於 Windows 上的中鍵自動捲動"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "按住按键后向任意方向移动鼠标来滚动。离按下的位置越远，滚动越快\n \n也可以单击后松开按键持续滚动，再次单击停止\n \n作用相当于 Windows 上的中键自动滚动"
+            "value" : "按住按键并移动鼠标来滚动。离按下的位置越远，滚动越快\n \n作用相当于 Windows 上的中键自动滚动"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "按住按鍵後向任意方向移動滑鼠來捲動。離按下的位置越遠，捲動越快\n \n也可以按一下後放開按鍵持續捲動，再按一下停止\n \n作用相當於 Windows 上的中鍵自動捲動"
+            "value" : "按住按鍵並移動滑鼠來捲動。離按下的位置越遠，捲動越快\n \n作用相當於 Windows 上的中鍵自動捲動"
           }
         }
       }
@@ -13899,6 +13899,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在Safari、地圖和其他應用程式中放大或縮小\n \n效果相當於在Apple觸控板上兩指分開或收合"
+          }
+        }
+      }
+    },
+    "scroll.windows-mode" : {
+      "comment" : "Mac Mouse Fix fork: Toggle on the Scrolling tab for Windows-style linear scrolling (no acceleration, same distance for every notch of the scroll wheel).",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows-Style Scrolling"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows 風格捲動"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows 风格滚动"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windows 風格捲動"
+          }
+        }
+      }
+    },
+    "scroll.windows-mode.hint" : {
+      "comment" : "Mac Mouse Fix fork: Toggle on the Scrolling tab for Windows-style linear scrolling (no acceleration, same distance for every notch of the scroll wheel).",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every notch of the scroll wheel scrolls the same distance, without acceleration, like on Windows. Choose the distance with Speed"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "滾輪每一格都捲動相同的距離，沒有加速，和 Windows 一樣。每格的距離由「速度」決定"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "滚轮每一格都滚动相同的距离，没有加速，和 Windows 一样。每格的距离由“速度”决定"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "滾輪每一格都捲動相同的距離，沒有加速，和 Windows 一樣。每格的距離由「速度」決定"
           }
         }
       }

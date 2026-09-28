@@ -86,6 +86,40 @@ class ScrollTabController: NSViewController {
     
     /// Init
     
+    private func makeWindowsModeSection() -> NSView {
+        
+        /// [Fork] Toggle for `Scroll.windowsMode` (See `ScrollConfig.isWindowsMode` and `Scroll.m`)
+        ///     Built in code instead of in Main.storyboard. Mirrors the layout of the 'Trackpad Simulation' toggle and hint.
+        
+        let toggle = NSButton(checkboxWithTitle: MFLocalizedString("scroll.windows-mode", comment: ""), target: nil, action: nil)
+        windowsMode.bindingTarget <~ toggle.reactive.boolValues
+        toggle.reactive.boolValue <~ windowsMode.producer
+        
+        let hint = NSTextField(wrappingLabelWithString: MFLocalizedString("scroll.windows-mode.hint", comment: ""))
+        hint.font = NSFont.systemFont(ofSize: NSFont.smallSystemFontSize)
+        hint.textColor = .secondaryLabelColor
+        hint.controlSize = .small
+        hint.isSelectable = true
+        
+        let indent = NSView()
+        hint.translatesAutoresizingMaskIntoConstraints = false
+        indent.addSubview(hint)
+        NSLayoutConstraint.activate([
+            hint.leadingAnchor.constraint(equalTo: indent.leadingAnchor, constant: 20),
+            hint.trailingAnchor.constraint(equalTo: indent.trailingAnchor),
+            hint.topAnchor.constraint(equalTo: indent.topAnchor),
+            hint.bottomAnchor.constraint(equalTo: indent.bottomAnchor),
+        ])
+        
+        let section = NSStackView(views: [toggle, indent])
+        section.orientation = .vertical
+        section.alignment = .leading
+        section.translatesAutoresizingMaskIntoConstraints = false
+        indent.widthAnchor.constraint(equalTo: section.widthAnchor).isActive = true
+        
+        return section
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -111,6 +145,13 @@ class ScrollTabController: NSViewController {
         /// Natural direction
         reverseDirection.bindingTarget <~ reverseDirectionToggle.reactive.boolValues
         reverseDirectionToggle.reactive.boolValue <~ reverseDirection.producer
+        
+        /// [Fork] Windows-style linear scrolling
+        let windowsModeSection = makeWindowsModeSection()
+        if let index = masterStack.arrangedSubviews.firstIndex(of: reverseDirectionToggle) {
+            masterStack.insertArrangedSubview(windowsModeSection, at: index + 1)
+            windowsModeSection.widthAnchor.constraint(equalTo: masterStack.widthAnchor).isActive = true /// Makes the hint wrap
+        }
         
         /// Scroll speed
         scrollSpeed.bindingTarget <~ speedPicker.reactive.selectedIdentifiers.map({ identifier in
