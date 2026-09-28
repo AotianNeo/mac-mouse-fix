@@ -31,6 +31,7 @@ import Cocoa
     private static let deadZone: Double = 10
     private static let maxScrollStep: Double = 160
     private static let tickInterval: TimeInterval = 1.0 / 60.0
+    private static let replayEchoWindow: CFTimeInterval = 0.5
     private static let eventMarker: Int64 = 0x4D4D_4641_5343 /// Written into `eventSourceUserData` of the events we post, so our own taps let them through.
     private static let passThroughModifiers: CGEventFlags = [.maskCommand, .maskControl, .maskAlternate, .maskShift] /// Modified clicks (e.g. Command-middle-click) are never turned into Auto Scroll
 
@@ -72,6 +73,7 @@ import Cocoa
     private var state: State = .idle
     private var suppressTriggerUp = false
     private var suppressedExitMouseButton: Int64?
+    private var lastReplay: (time: CFTimeInterval, point: CGPoint, sourcePID: Int64, timestamp: CGEventTimestamp)?
 
     private var timer: DispatchSourceTimer?
     private var lastVelocity = CGVector.zero
@@ -189,13 +191,14 @@ import Cocoa
         let passThrough = Unmanaged.passUnretained(event)
 
         /// Re-enable on timeout
-        if type == .tapDisabledByTimeout || type == .tapDisabledByUserInput {
-            DDLogInfo("AutoScroll: Event tap was disabled by \(type == .tapDisabledByTimeout ? "timeout. Re-enabling." : "user input.")")
-            if type == .tapDisabledByTimeout {
-                deactivate() /// We might have missed a button-up. Don't risk getting stuck.
-                updateTaps()
-            }
+        if type == .tapDisabledByTimeout {
+            DDLogInfo("AutoScroll: Event tap was disabled by timeout. Re-enabling.")
+            deactivate() /// We might have missed a button-up. Don't risk getting stuck.
+            updateTaps()
             return passThrough
+        }
+        if type == .tapDisabledByUserInput {
+            return passThrough /// We also get this every time we disable the tracking tap ourselves
         }
 
         /// Guard running
@@ -267,6 +270,19 @@ import Cocoa
 
         /// Let the MMF settings capture the button
         if Remap.addModeIsEnabled { return passThrough }
+
+        /// Let echoes of our replayed clicks through
+        ///     Other tools that hold back and re-post middle clicks (e.g. Smooze Pro's or LinearMouse's own Auto Scroll) can send our replayed click right back to us – without our marker.
+        ///     Holding it back again would make the two tools bounce the click back and forth forever. (Observed with Smooze Pro: ~1.7k clicks per second.)
+        ///     An echo is either a new event posted by another process (Smooze Pro does this), or a copy of our replayed event (same timestamp).
+        ///     A quick second click by the user comes from the same source as the first one and has a new timestamp, so it's still handled normally.
+        if let lastReplay,
+           CACurrentMediaTime() - lastReplay.time < Self.replayEchoWindow,
+           !Self.exceedsDeadZone(from: lastReplay.point, to: point),
+           event.getIntegerValueField(.eventSourceUnixProcessID) != lastReplay.sourcePID || (event.timestamp != 0 && event.timestamp == lastReplay.timestamp) {
+            DDLogDebug("AutoScroll: Letting echoed click through (source pid: \(event.getIntegerValueField(.eventSourceUnixProcessID)))")
+            return passThrough
+        }
 
         /// Let modified clicks through
         if !event.flags.intersection(Self.passThroughModifiers).isEmpty { return passThrough }
@@ -403,6 +419,8 @@ import Cocoa
         guard case let .pending(pending) = state else { return }
 
         state = .idle
+        let replayedDown = pending.bufferedEvents[0]
+        lastReplay = (CACurrentMediaTime(), pending.anchor, replayedDown.getIntegerValueField(.eventSourceUnixProcessID), replayedDown.timestamp)
 
         var events = pending.bufferedEvents
         if let finalEvent {
