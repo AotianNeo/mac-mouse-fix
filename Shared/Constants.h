@@ -141,6 +141,7 @@ typedef NSString*                                                       MFString
 #define kMFModifiedDragTypeThreeFingerSwipe                             @"threeFingerSwipe"
 #define kMFModifiedDragTypeFakeDrag                                     @"fakeDrag"
 #define kMFModifiedDragTypeAddModeFeedback                              @"addModeDrag"
+#define kMFModifiedDragTypeAutoScroll                                   @"autoScroll" /// [Fork] Handled by `AutoScroll.swift`, not by `ModifiedDrag`. See `AutoScrollConfig.swift`.
 // Variant keys
 #define kMFModifiedDragDictKeyFakeDragVariantButtonNumber               @"buttonNumber"
 

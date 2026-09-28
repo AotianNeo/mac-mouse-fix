@@ -6,14 +6,20 @@
 // --------------------------------------------------------------------------
 //
 
-/// Typed view of the `AutoScroll` dict in config.plist. Mirrors Smooze Pro's Auto Scroll options.
+/// Auto Scroll settings. Mirrors Smooze Pro's Auto Scroll options.
 ///
-/// Every key falls back to the value below if it's missing, because `Config.m` doesn't merge new keys from `default_config.plist` into an existing config.plist unless the `configVersion` changes.
-/// Keep these fallbacks in sync with the `AutoScroll` dict in `default_config.plist`.
+/// Turning Auto Scroll on and off:
+///     Auto Scroll is a 'Click and Drag' action on the Buttons tab (`kMFModifiedDragTypeAutoScroll`). It's on for button N if the Remaps contain
+///     "Button N, Click and Drag -> Auto Scroll" without keyboard modifiers. (The first such remap wins.)
+///     `Remap.m` skips these remaps, so MMF's own drag handling (`ModifiedDrag`) never sees them.
+///     If the same button has other actions (e.g. "Click -> Mission Control"), clicking doesn't toggle Auto Scroll, so those actions keep working.
+///         Clicks are held back until the button is released and then replayed. So actions that need the button to be held (Hold, Click and Scroll) won't work on that button.
+///
+/// Everything else comes from the `AutoScroll` dict in config.plist.
+///     Every key falls back to the value below if it's missing, because `Config.m` doesn't merge new keys from `default_config.plist` into an existing config.plist unless the `configVersion` changes.
+///     Keep these fallbacks in sync with the `AutoScroll` dict in `default_config.plist`.
 ///
 /// Keys:
-/// - `enabled`               Master switch
-/// - `button`                Trigger button, using MMF's 1-based numbering (3 = middle button). Buttons 1 and 2 aren't allowed.
 /// - `actAsButtonOverLinks`  Clicking over a link / button / tab performs the normal click instead of starting Auto Scroll. (Dragging still starts Auto Scroll.)
 /// - `holdToActivate`        Press, drag, and release to Auto Scroll. Releasing the button stops scrolling.
 /// - `clickToToggle`         Click once to start Auto Scroll, click again (or click any button, or use the wheel) to stop. Combined with `holdToActivate`, this is the Windows behavior.
@@ -29,8 +35,8 @@ import Cocoa
 
 struct AutoScrollConfig: Equatable {
 
-    var enabled = true
-    var button = 3
+    var enabled = false     /// Derived from Remaps
+    var button = 3          /// Derived from Remaps. MMF's 1-based numbering (3 = middle button)
     var actAsButtonOverLinks = true
     var holdToActivate = true
     var clickToToggle = true
@@ -56,7 +62,19 @@ struct AutoScrollConfig: Equatable {
     static func load() -> AutoScrollConfig {
 
         var result = AutoScrollConfig()
+
+        /// On/off and button from Remaps
+        let remaps = config(kMFConfigKeyRemaps) as? [NSDictionary] ?? []
+        guard let button = autoScrollButton(in: remaps) else {
+            return result
+        }
+        result.enabled = true
+        result.button = button
+        let buttonHasOtherActions = remaps.contains { remapUsesButton($0, button) && !isAutoScrollRemap($0) }
+
+        /// Other settings from the `AutoScroll` dict
         guard let dict = config("AutoScroll") as? NSDictionary else {
+            if buttonHasOtherActions { result.clickToToggle = false }
             return result
         }
 
@@ -68,8 +86,6 @@ struct AutoScrollConfig: Equatable {
             return min(max(value, range.lowerBound), range.upperBound)
         }
 
-        result.enabled              = bool("enabled", result.enabled)
-        result.button               = Int(double("button", Double(result.button), 3...32))
         result.actAsButtonOverLinks = bool("actAsButtonOverLinks", result.actAsButtonOverLinks)
         result.holdToActivate       = bool("holdToActivate", result.holdToActivate)
         result.clickToToggle        = bool("clickToToggle", result.clickToToggle)
@@ -81,6 +97,49 @@ struct AutoScrollConfig: Equatable {
         result.reverseVertical      = bool("reverseVertical", result.reverseVertical)
         result.reverseHorizontal    = bool("reverseHorizontal", result.reverseHorizontal)
 
+        if buttonHasOtherActions { result.clickToToggle = false }
+
         return result
+    }
+
+    /// Remaps
+
+    private static func isAutoScrollRemap(_ remap: NSDictionary) -> Bool {
+        return ((remap[kMFRemapsKeyEffect] as? NSDictionary)?[kMFModifiedDragDictKeyType] as? String) == kMFModifiedDragTypeAutoScroll
+    }
+
+    private static func autoScrollButton(in remaps: [NSDictionary]) -> Int? {
+
+        /// Find "Button N, Click and Drag -> Auto Scroll" without keyboard modifiers
+
+        for remap in remaps where isAutoScrollRemap(remap) && (remap[kMFRemapsKeyTrigger] as? String) == kMFTriggerDrag {
+
+            let modifiers = remap[kMFRemapsKeyModificationPrecondition] as? NSDictionary
+            let keyboardModifiers = (modifiers?[kMFModificationPreconditionKeyKeyboard] as? NSNumber)?.uintValue ?? 0
+            let buttonModifiers = modifiers?[kMFModificationPreconditionKeyButtons] as? [NSDictionary] ?? []
+
+            guard keyboardModifiers == 0,
+                  buttonModifiers.count == 1,
+                  (buttonModifiers[0][kMFButtonModificationPreconditionKeyClickLevel] as? NSNumber)?.intValue == 1,
+                  let button = (buttonModifiers[0][kMFButtonModificationPreconditionKeyButtonNumber] as? NSNumber)?.intValue,
+                  button >= 3 else {
+                continue
+            }
+            return button
+        }
+        return nil
+    }
+
+    private static func remapUsesButton(_ remap: NSDictionary, _ button: Int) -> Bool {
+
+        /// Whether `button` triggers the remap or is one of its modifiers
+
+        if let trigger = remap[kMFRemapsKeyTrigger] as? NSDictionary,
+           (trigger[kMFButtonTriggerKeyButtonNumber] as? NSNumber)?.intValue == button {
+            return true
+        }
+        let modifiers = remap[kMFRemapsKeyModificationPrecondition] as? NSDictionary
+        let buttonModifiers = modifiers?[kMFModificationPreconditionKeyButtons] as? [NSDictionary] ?? []
+        return buttonModifiers.contains { ($0[kMFButtonModificationPreconditionKeyButtonNumber] as? NSNumber)?.intValue == button }
     }
 }

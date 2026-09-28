@@ -4872,6 +4872,64 @@
     "capture-toast.scroll.uncaptured.hint" : {
       "shouldTranslate" : false
     },
+    "drag-effect.auto-scroll" : {
+      "comment" : "Mac Mouse Fix fork: Windows-style middle-button Auto Scroll, offered as a 'Click and Drag' action on the Buttons tab.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto Scroll"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自動捲動"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自动滚动"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自動捲動"
+          }
+        }
+      }
+    },
+    "drag-effect.auto-scroll.hint" : {
+      "comment" : "Mac Mouse Fix fork: Windows-style middle-button Auto Scroll, offered as a 'Click and Drag' action on the Buttons tab.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scroll by moving your mouse away from where you pressed the button. The farther you move it, the faster it scrolls\n \nClick instead to keep scrolling without holding the button, and click again to stop\n \nWorks like middle-click Auto Scroll on Windows"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "按住按鍵後向任意方向移動滑鼠來捲動。離按下的位置越遠，捲動越快\n \n也可以按一下後放開按鍵持續捲動，再按一下停止\n \n作用相當於 Windows 上的中鍵自動捲動"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "按住按键后向任意方向移动鼠标来滚动。离按下的位置越远，滚动越快\n \n也可以单击后松开按键持续滚动，再次单击停止\n \n作用相当于 Windows 上的中键自动滚动"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "按住按鍵後向任意方向移動滑鼠來捲動。離按下的位置越遠，捲動越快\n \n也可以按一下後放開按鍵持續捲動，再按一下停止\n \n作用相當於 Windows 上的中鍵自動捲動"
+          }
+        }
+      }
+    },
     "drag-effect.dock-swipe" : {
       "comment" : "",
       "localizations" : {

@@ -124,6 +124,14 @@ static NSArray *getDragEffectsTable() {
                   kMFModifiedDragDictKeyType: kMFModifiedDragTypeTwoFingerSwipe,
             }
         },
+        separatorEffectsTableEntry(),
+        @{
+            @"ui": MFLocalizedString(@"drag-effect.auto-scroll", @""),
+            @"tool": MFLocalizedString(@"drag-effect.auto-scroll.hint", @""),
+            @"dict": @{
+                  kMFModifiedDragDictKeyType: kMFModifiedDragTypeAutoScroll, /// [Fork] Windows-style Auto Scroll. See `AutoScroll.swift`
+            }
+        },
 //        separatorEffectsTableEntry(),
 //        @{
 ////          @"ui": [NSString stringWithFormat:@"%@ Click and Drag", [UIStrings getButtonString:3]],

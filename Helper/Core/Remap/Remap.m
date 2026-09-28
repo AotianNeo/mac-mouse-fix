@@ -209,6 +209,8 @@ static NSDictionary *_remaps;
         NSArray *remapsTable = [Config.shared.config objectForKey:kMFConfigKeyRemaps];
         
         for (NSDictionary *tableEntry in remapsTable) {
+            /// [Fork] Skip Auto Scroll. It's handled by `AutoScroll.swift` with its own event taps, which see the button's events before `ButtonInputReceiver` does. See `AutoScrollConfig.swift`.
+            if ([tableEntry[kMFRemapsKeyEffect][kMFModifiedDragDictKeyType] isEqual: kMFModifiedDragTypeAutoScroll]) continue;
             /// Get modification precondition section of keypath
             NSDictionary *modificationPrecondition = tableEntry[kMFRemapsKeyModificationPrecondition];
             /// Get trigger section of keypath
