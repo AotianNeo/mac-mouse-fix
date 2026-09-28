@@ -2156,6 +2156,267 @@
         }
       }
     },
+    "button-options.auto-scroll.acceleration" : {
+      "comment" : "Mac Mouse Fix fork: Auto Scroll settings in the Options sheet on the Buttons tab.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acceleration:"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "加速度："
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "加速度："
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "加速度："
+          }
+        }
+      }
+    },
+    "button-options.auto-scroll.acceleration.hint" : {
+      "comment" : "Mac Mouse Fix fork: Auto Scroll settings in the Options sheet on the Buttons tab.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How quickly scrolling speeds up as you move the mouse away from where you pressed the button"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "滑鼠離按下的位置越遠，捲動加速得越快的程度"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "鼠标离按下的位置越远，滚动加速得越快的程度"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "滑鼠離按下的位置越遠，捲動加速得越快的程度"
+          }
+        }
+      }
+    },
+    "button-options.auto-scroll.animate-release" : {
+      "comment" : "Mac Mouse Fix fork: Auto Scroll settings in the Options sheet on the Buttons tab.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Animate Release"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "放開後慣性滑動"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "松开后惯性滑动"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "放開後慣性滑動"
+          }
+        }
+      }
+    },
+    "button-options.auto-scroll.animate-release.hint" : {
+      "comment" : "Mac Mouse Fix fork: Auto Scroll settings in the Options sheet on the Buttons tab.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep gliding and slow down smoothly when you release the button, like on a trackpad"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "放開按鍵後繼續滑動並平滑減速，就像在觸控式軌跡板上一樣"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "松开按键后继续滑动并平滑减速，就像在触控板上一样"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "放開按鍵後繼續滑動並平滑減速，就像在觸控式軌跡板上一樣"
+          }
+        }
+      }
+    },
+    "button-options.auto-scroll.release-duration" : {
+      "comment" : "Mac Mouse Fix fork: Auto Scroll settings in the Options sheet on the Buttons tab.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Release Duration:"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "慣性時長："
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "惯性时长："
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "慣性時長："
+          }
+        }
+      }
+    },
+    "button-options.auto-scroll.reverse-horizontal" : {
+      "comment" : "Mac Mouse Fix fork: Auto Scroll settings in the Options sheet on the Buttons tab.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reverse Horizontal"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "反轉水平方向"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "反转水平方向"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "反轉水平方向"
+          }
+        }
+      }
+    },
+    "button-options.auto-scroll.reverse-vertical" : {
+      "comment" : "Mac Mouse Fix fork: Auto Scroll settings in the Options sheet on the Buttons tab.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reverse Vertical"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "反轉垂直方向"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "反转垂直方向"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "反轉垂直方向"
+          }
+        }
+      }
+    },
+    "button-options.auto-scroll.super-slowdown" : {
+      "comment" : "Mac Mouse Fix fork: Auto Scroll settings in the Options sheet on the Buttons tab.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Super Slowdown:"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "超級減速："
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "超级减速："
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "超級減速："
+          }
+        }
+      }
+    },
+    "button-options.auto-scroll.super-slowdown.hint" : {
+      "comment" : "Mac Mouse Fix fork: Auto Scroll settings in the Options sheet on the Buttons tab.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scroll extra slowly close to where you pressed the button, for precise scrolling. 0 turns it off"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在按下的位置附近額外減慢捲動，方便精細捲動。0 為關閉"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在按下的位置附近额外减慢滚动，方便精细滚动。0 为关闭"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在按下的位置附近額外減慢捲動，方便精細捲動。0 為關閉"
+          }
+        }
+      }
+    },
     "buy-mouse-alert.body" : {
       "comment" : "",
       "localizations" : {
