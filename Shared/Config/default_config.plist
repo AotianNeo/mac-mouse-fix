@@ -56,6 +56,18 @@
 	</dict>
 	<key>AutoScroll</key>
 	<dict>
+		<key>enabled</key>
+		<true/>
+		<key>button</key>
+		<integer>3</integer>
+		<key>actAsButtonOverLinks</key>
+		<true/>
+		<key>holdToActivate</key>
+		<true/>
+		<key>clickToToggle</key>
+		<true/>
+		<key>smartAutoScroll</key>
+		<false/>
 		<key>acceleration</key>
 		<real>10</real>
 		<key>superSlowdown</key>

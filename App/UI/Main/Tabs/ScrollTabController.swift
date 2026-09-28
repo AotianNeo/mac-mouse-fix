@@ -117,6 +117,14 @@ class ScrollTabController: NSViewController {
         section.translatesAutoresizingMaskIntoConstraints = false
         indent.widthAnchor.constraint(equalTo: section.widthAnchor).isActive = true
         
+        /// Don't stretch vertically
+        ///     TabViewController measures a tab after making the window huge. The storyboard views all hug their content with priority 750+, so the tab keeps its natural height. Views created in code default to 250 and would stretch – making the window ~100000 pt tall.
+        ///     Note: Hugging only affects views with an intrinsic size, so it's the checkbox and the hint that matter here.
+        for view in [toggle, hint] {
+            view.setContentHuggingPriority(.required, for: .vertical)
+        }
+        section.setHuggingPriority(.required, for: .vertical)
+        
         return section
     }
     
