@@ -67,18 +67,17 @@ class AutoScrollTabController: NSViewController {
         let releaseDurationSlider = makeSlider(releaseDuration, range: 50...2000, step: 50, defaultValue: 400, format: { "\(Int($0)) ms" })
 
         /// Direction
-        let reverseRow = NSStackView(views: [
-            makeCheckbox(reverseVertical, key: "auto-scroll.reverse-vertical", defaultValue: false),
-            makeCheckbox(reverseHorizontal, key: "auto-scroll.reverse-horizontal", defaultValue: false),
-        ])
-        reverseRow.spacing = 16
+        ///     One checkbox per row, so column 1 stays as wide as the sliders. (Both in one row made the grid wider than the tab, which truncated the checkboxes and squeezed out the value labels.)
+        let reverseVerticalToggle = makeCheckbox(reverseVertical, key: "auto-scroll.reverse-vertical", defaultValue: false)
+        let reverseHorizontalToggle = makeCheckbox(reverseHorizontal, key: "auto-scroll.reverse-horizontal", defaultValue: false)
 
         let grid = NSGridView(views: [
             [label("auto-scroll.acceleration"), accelerationSlider.slider, accelerationSlider.valueLabel],
             [label("auto-scroll.super-slowdown"), superSlowdownSlider.slider, superSlowdownSlider.valueLabel],
             [NSGridCell.emptyContentView, animateReleaseToggle, NSGridCell.emptyContentView],
             [label("auto-scroll.release-duration"), releaseDurationSlider.slider, releaseDurationSlider.valueLabel],
-            [label("auto-scroll.scroll-direction"), reverseRow, NSGridCell.emptyContentView],
+            [label("auto-scroll.scroll-direction"), reverseVerticalToggle, NSGridCell.emptyContentView],
+            [NSGridCell.emptyContentView, reverseHorizontalToggle, NSGridCell.emptyContentView],
         ])
         grid.column(at: 0).xPlacement = .trailing
         grid.rowAlignment = .firstBaseline
@@ -111,7 +110,7 @@ class AutoScrollTabController: NSViewController {
         /// Don't stretch vertically
         ///     TabViewController measures a tab after making the window huge. The storyboard tabs' views all hug their content with priority 750+, so they keep their natural height. Views created in code default to 250 and would stretch – making the window ~100000 pt tall.
         hugVertically(master)
-        
+
         /// Everything except the enable toggle is disabled while Auto Scroll is off
         for control in allControls(in: master) where control !== enableToggle {
             if control === releaseDurationSlider.slider {
@@ -192,6 +191,8 @@ class AutoScrollTabController: NSViewController {
         let valueLabel = NSTextField(labelWithString: format(defaultValue))
         valueLabel.font = NSFont.monospacedDigitSystemFont(ofSize: NSFont.smallSystemFontSize, weight: .regular)
         valueLabel.textColor = .secondaryLabelColor
+        valueLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        valueLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true /// Fits "2000 ms"
 
         configValue.producer.take(during: reactive.lifetime).startWithValues { [weak slider, weak valueLabel] value in
             slider?.doubleValue = value
@@ -213,11 +214,15 @@ class AutoScrollTabController: NSViewController {
         if let stack = view as? NSStackView {
             stack.setHuggingPriority(.init(999), for: .vertical)
         }
+        /// Controls and labels must never be squashed below their natural height. (Their default compression resistance is 750, which loses against the 999 hugging above – NSGridView then squashed the labels to a few points.)
+        if view is NSControl {
+            view.setContentCompressionResistancePriority(.required, for: .vertical)
+        }
         for subview in view.subviews {
             hugVertically(subview)
         }
     }
-    
+
     private func allControls(in view: NSView) -> [NSControl] {
         return view.subviews.flatMap { subview -> [NSControl] in
             if let control = subview as? NSControl, !(control is NSTextField) { return [control] }
